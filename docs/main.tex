@@ -1,0 +1,99 @@
+\documentclass[11pt, a4paper]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+
+\title{
+    \textbf{KDI Foundational DB} \\
+    \large Harmonizing Macro-Level Democratic Indicators
+}
+\author{Moosa Ghaeb}
+\date{\today}
+
+
+\geometry{a4paper, margin=1in}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={R Code Portfolio},
+    pdfpagemode=FullScreen,
+}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+\begin{document}
+
+\maketitle
+
+\section*{Project Overview}
+
+This document contains the R code for a data pipeline project designed to harmonize several key datasets in comparative political science. The project's objective is to ingest raw data from The World Bank, the V-Dem Institute, and the Quality of Government (QoG) Institute, process and link them deterministically, and load the final, analysis-ready dataset into a PostgreSQL database.
+
+The pipeline is structured across several scripts, each with a distinct purpose, demonstrating a modular and reproducible workflow.
+
+\hrulefill
+\vspace{1cm}
+
+
+\section*{Script 1: Data Ingestion}
+\texttt{R/01\_ingest\_data.R}
+
+This script handles the "Extract" phase. It downloads all necessary raw data from the three sources and saves them locally.
+\lstinputlisting[language=R]{R/01_ingest_data.R}
+
+\section*{Script 2: Data Transformation and Merging}
+\texttt{R/02\_transform\_and\_merge.R}
+
+This script performs the "Transform" phase. It cleans each raw dataset, filters for the relevant time period (1990+), standardizes column names, and merges the three sources into a single, coherent data frame using a key-based full join.
+\lstinputlisting[language=R]{R/02_transform_and_merge.R}
+
+\section*{Script 3: Load Data to PostgreSQL}
+\texttt{R/03\_load\_to\_db.R}
+
+This script handles the "Load" phase. It connects to a PostgreSQL database and writes the final, merged data frame to a table, making it available for analysis.
+\lstinputlisting[language=R]{R/03_load_to_db.R}
+
+\section*{Script 4: Methodological Extension - Imputation}
+\texttt{R/04\_imputation\_example.R}
+
+This script demonstrates a methodological extension for handling missing data. It uses linear interpolation to impute missing values in the time-series data for GDP and creates a visualization to illustrate the result.
+\lstinputlisting[language=R]{R/04_imputation_example.R}
+
+\end{document}
